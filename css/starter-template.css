@@ -21,7 +21,7 @@ form { background: #888; padding: 3px; position: fixed; bottom: 0; width: 100%; 
 
 form input { border: 0; height: 10vh; padding: 10px; width: 90%; margin-right: .5%; }
 
-/*form button { width: 9%; height: 10vh; border: none; padding: 10px; }*/
+form button { width: 9%; height: 10vh; border: none; padding: 10px; }
 
 #messages { list-style-type: none; margin: 0; padding: 0; }
 
@@ -33,5 +33,6 @@ form input { border: 0; height: 10vh; padding: 10px; width: 90%; margin-right: .
     box-shadow: 3px 3px 10px #888888;
     position: fixed;
     top: 0px;
-    width: 100%;
+    left: -10px;
+    width: 110%;
 }
