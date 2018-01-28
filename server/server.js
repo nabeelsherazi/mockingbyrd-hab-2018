@@ -3,7 +3,7 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
 app.get('/', function(req, res){
-  res.sendFile('C:/Users/nxtfa/Projects/Python/printer-sniffer-hab2018/server/test.html');
+  res.sendFile(__dirname + '/test.html');
 });
 
 io.on('connection', function(socket){

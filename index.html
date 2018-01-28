@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Starter Template for Bootstrap</title>
+    <title>A Chat App</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
@@ -16,36 +16,22 @@
   </head>
 
   <body>
-
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-header">
-        <a class="navbar-brand" href="#">
-          <img alt="Brand" src="mockingbird.png">
-        </a>
-        </div>
-      </div>
-    </nav>
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img class="brand" alt="Brand" src="mockingbird.png">
+    </a>
+  </div>
 
 
     <div class="container">
 
       <div class="starter-template">
-        <div class="loading">
-          <h3 id="message">Awaiting message...</h3>
-        </div>
 
-        <form>
-          <div class="form-group">
-            <label for="messageInput">Input your message here</label>
-            <textarea class="form-control" id="messageInput" rows="3"></textarea>
-            <button type="submit" class="btn btn-primary ">Send</button>
-          </div>
+        <form action="">
+          <input id="m" autocomplete="off" /><button class="btn btn-lg">Send</button>
         </form>
 
         <button type="button" class="btn-lg btn-success" id="listen">Listen</button>
-
-        <audio controls="controls" src="BIRDNOISES.mp3"></audio>
       </div>
     </div><!-- /.container -->
 
