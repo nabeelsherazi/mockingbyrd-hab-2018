@@ -14,7 +14,7 @@ app.use('/', express.static(path.resolve(__dirname + '/../')));
 
 var initialClients = io.sockets.clients();
 var activeClients = {};
-for (var i=0; i<initalClients.length; i++) {
+for (var i=0; i<initialClients.length; i++) {
     activeClients[initialClients[i]] = false;
 }
 
