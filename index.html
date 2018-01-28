@@ -38,9 +38,10 @@
   }
 
   $(function () {
-    var socket = io("http://localhost:3000");
+    var socket = io();
     $('form').submit(function(){
       socket.emit('chat message', $('#m').val());
+      console.log("I AM SENDING A MESSAGE!!!!!!!!!!!!")
       $('#m').val('');
       return false;
     });
@@ -48,11 +49,12 @@
       $('#messages').append($('<li>').text(msg));
       // Play audio of X frequency num for 3 seconds
       play(frequencies[num]);
+    });
 
-	  socket.on('currentFrequency', function(num){
-		  listeningFrequency = frequencies[num];
-	  });
-
+	socket.on('currentFreq', function(num){
+      listeningFrequency = frequencies[num];
+	});
+  });
 
 
 
@@ -82,11 +84,7 @@
   		    total += heardArray[i];
   		}
   		var avg = total / heardArray.length;
-
-
-
-
-  	};
+        };
 
 
 
@@ -100,8 +98,6 @@
     if (listeningFrequency <= avg + 10 && listeningFrequency >= avg - 10) {
     socket.emit('heard');
     }
-    });
-  });
 </script>
 <!-- end chat script -->
   <body>
