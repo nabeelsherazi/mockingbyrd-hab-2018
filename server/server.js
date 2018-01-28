@@ -14,7 +14,7 @@ app.use('/', express.static(path.resolve(__dirname + '/../')));
 
 var initialClients = io.sockets.clients();
 var activeClients = {};
-for (var i=0; i<initalClients.length; i++) {
+for (var i=0; i<initialClients.length; i++) {
     activeClients[initialClients[i]] = false;
 }
 
@@ -35,6 +35,7 @@ io.on('connection', function(socket){
     activeClients[selectedClient] = true;
     socket.broadcast.to(selectedClient).emit('chat message', msg, 1);
     timed_message = msg;
+    await sleep(10);
 });
 
   socket.on('heard', function(){
