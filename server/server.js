@@ -35,6 +35,7 @@ io.on('connection', function(socket){
     activeClients[selectedClient] = true;
     socket.broadcast.to(selectedClient).emit('chat message', msg, 1);
     timed_message = msg;
+    await sleep(10);
 });
 
   socket.on('heard', function(){
