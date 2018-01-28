@@ -16,12 +16,13 @@
 	<script src="wad.js"></script>
 	
   </head>
-  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
   <!-- Chat script -->
   <script>
-	  var frequencies = [300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800];
 	  var listeningFrequency = 0;
+      frequencies = [300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800];
+
 
   function stop() {
     osc.disconnect();
@@ -29,11 +30,11 @@
 
   function play(freq) {
     osc = audioContext.createOscillator();
-    osc.frequency.value = freq; 
-    osc.type = "sine"
+    osc.frequency.value = freq;
+    osc.type = "sine";
     osc.connect(audioContext.destination);
-                    osc.start(0);
-                    setTimeout(stop(), 3000)
+    osc.start(0);
+    setTimeout(stop(), 3000);
   }
 
   $(function () {
