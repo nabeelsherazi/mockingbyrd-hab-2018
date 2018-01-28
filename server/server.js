@@ -44,6 +44,7 @@ io.on('connection', function(socket){
     console.log('heard by user with id '+ socket.id);
     socket.broadcast.to(socket.id).emit('chat message', msg, counter);
     counter += 1;
+    io.emit('currentFreq', counter)
     setTimeout(sendToAllRemainingClients(), 10000)
 
   });
