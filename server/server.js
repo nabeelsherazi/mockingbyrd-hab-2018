@@ -38,7 +38,7 @@ io.on('connection', function(socket){
     activeClients[selectedClient] = true;
     socket.broadcast.to(selectedClient).emit('chat message', msg, 0);
     timed_message = msg;
-});
+    });
 
     socket.on('heard', function(){
     console.log('heard by user with id '+ socket.id);
@@ -68,7 +68,7 @@ var randomClient = function (obj) {
 var sendToAllRemainingClients = function() {
     for (var id in activeClients) { // Broadcast message to all people who haven't received it yet.
         if (activeClients[id] == false) {
-            io.to(id).emit('chat message', msg);
+            io.to(id).emit('chat message', timed_message);
             activeClients[id] = true;
         }
         else {

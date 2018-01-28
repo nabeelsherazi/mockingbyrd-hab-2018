@@ -14,9 +14,9 @@
     <!-- Custom styles for this template -->
     <link href="css/styles.css" type="text/css" rel="stylesheet">
 	<script src="wad.js"></script>
-	
+
   </head>
-  <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
+  <script src="/socket.io/socket.io/script">
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
   <!-- Chat script -->
   <script>
@@ -48,19 +48,19 @@
       $('#messages').append($('<li>').text(msg));
       // Play audio of X frequency num for 3 seconds
       play(frequencies[num]);
-	  
+
 	  socket.on('currentFrequency', function(num){
 		  listeningFrequency = frequencies[num];
 	  });
-	  
-	  
-	  
-	  
+
+
+
+
   	//Listens to audio and measures pitch
   	var voice = new Wad({source : 'mic' }); // At this point, your browser will ask for permission to access your microphone.
   	var tuner = new Wad.Poly();
   	tuner.add(voice);
-	
+
   	var heardArray = [0,0,0,0]
 
   	voice.play(); // You must give your browser permission to access your microphone before calling play().
@@ -70,31 +70,31 @@
   	var logPitch = function(){
   	    console.log(tuner.pitch, tuner.noteName)
   	    requestAnimationFrame(logPitch)
-		
+
   		//adds current pitch to array
   		heardArray.push(tuner.pitch)
   		//removes first element
   		heardArray.shift
   		//calculates average
-		
+
   		var total = 0;
   		for(var i = 0; i < heardArray.length; i++) {
   		    total += heardArray[i];
   		}
   		var avg = total / heardArray.length;
-		
-		
-		
-		
+
+
+
+
   	};
-	
-	
-	
+
+
+
   	logPitch();
-	  
-	  
-	  
-	  
+
+
+
+
 
     // on HeardAudioTone
     if (listeningFrequency <= avg + 10 && listeningFrequency >= avg - 10) {
