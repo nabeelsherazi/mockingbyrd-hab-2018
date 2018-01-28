@@ -12,7 +12,7 @@ app.get('/', function(req, res){
 
 app.use('/', express.static(path.resolve(__dirname + '/../')));
 
-var initalClients = io.sockets.clients();
+var initialClients = io.sockets.clients();
 var activeClients = {};
 for (var i=0; i<initalClients.length; i++) {
     activeClients[initialClients[i]] = false;
@@ -31,6 +31,7 @@ io.on('connection', function(socket){
   socket.on('chat message', function(msg){
     console.log('message from user with id '+ socket.id + ' : ' + msg);
     selectedClient = randomClient(activeClients);
+    console.log('selected client is '+ selectedClient);
     activeClients[selectedClient] = true;
     socket.broadcast.to(selectedClient).emit('chat message', msg, 1);
     timed_message = msg;
@@ -58,5 +59,5 @@ http.listen(port, function(){
 
 var randomClient = function (obj) {
     var keys = Object.keys(obj);
-    return obj[keys[ keys.length * Math.random() << 0]];
+    return keys[ keys.length * Math.random() << 0];
 };
