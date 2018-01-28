@@ -26,7 +26,7 @@ io.on('connection', function(socket){
   activeClients[socket.id] = false;
   socket.on('disconnect', function(){
       console.log('user with id '+ socket.id + ' disconnected');
-      delete activeClients.socket.id;
+      delete activeClients[socket.id];
       });
   socket.on('chat message', function(msg){
     console.log('message from user with id '+ socket.id + ' : ' + msg);
@@ -40,14 +40,20 @@ io.on('connection', function(socket){
     timed_message = msg;
 });
 
-  socket.on('heard', function(){
+    socket.on('heard', function(){
     console.log('heard by user with id '+ socket.id);
     socket.broadcast.to(socket.id).emit('chat message', msg, counter);
     counter += 1;
     setTimeout(sendToAllRemainingClients(), 10000)
 
   });
+
 });
+
+
+
+
+
 
 http.listen(port, function(){
   console.log('listening on *:' + port);
