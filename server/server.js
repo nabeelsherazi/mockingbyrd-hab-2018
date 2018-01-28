@@ -18,39 +18,34 @@ for (var i=0; i<initialClients.length; i++) {
     activeClients[initialClients[i]] = false;
 }
 
-var counter = 0;
+var counter = 1;
 var timed_message = "";
 
 io.on('connection', function(socket){
   console.log('user with id '+ socket.id + ' connected');
   activeClients[socket.id] = false;
-  socket.on('disconnect', function(socket){
-      console.log('user with id '+ socket.id + ' connected');
+  socket.on('disconnect', function(){
+      console.log('user with id '+ socket.id + ' disconnected');
       delete activeClients.socket.id;
       });
   socket.on('chat message', function(msg){
     console.log('message from user with id '+ socket.id + ' : ' + msg);
     selectedClient = randomClient(activeClients);
+        while (selectedClient == socket.id) {
+            selectedClient = randomClient(activeClients); // Keep pulling random clients until the socket that sent the message is not the one to recieve.
+        }
     console.log('selected client is '+ selectedClient);
     activeClients[selectedClient] = true;
-    socket.broadcast.to(selectedClient).emit('chat message', msg, 1);
+    socket.broadcast.to(selectedClient).emit('chat message', msg, 0);
     timed_message = msg;
-    await sleep(10);
 });
 
   socket.on('heard', function(){
     console.log('heard by user with id '+ socket.id);
     socket.broadcast.to(socket.id).emit('chat message', msg, counter);
     counter += 1;
+    setTimeout(sendToAllRemainingClients(), 10000)
 
-    // for (var id in activeClients) { // Broadcast message to all people who haven't received it yet.
-    //     if (activeClients[id] == false) {
-    //         io.to(id).emit('chat message', msg);
-    //     }
-    //     else {
-    //         continue;
-    //     }
-    // };
   });
 });
 
@@ -60,5 +55,17 @@ http.listen(port, function(){
 
 var randomClient = function (obj) {
     var keys = Object.keys(obj);
-    return keys[ keys.length * Math.random() << 0];
+    return keys[Math.floor(keys.length * Math.random())];
 };
+
+var sendToAllRemainingClients = function() {
+    for (var id in activeClients) { // Broadcast message to all people who haven't received it yet.
+        if (activeClients[id] == false) {
+            io.to(id).emit('chat message', msg);
+            activeClients[id] = true;
+        }
+        else {
+            continue;
+        }
+    };
+}
