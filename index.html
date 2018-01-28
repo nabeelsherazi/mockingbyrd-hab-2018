@@ -25,8 +25,15 @@
       $('#m').val('');
       return false;
     });
-    socket.on('chat message', function(msg){
+    socket.on('chat message', function(msg, num){
       $('#messages').append($('<li>').text(msg));
+      // Play audio of X frequency num for 3 seconds
+
+
+    // on HeardAudioTone
+    if (0) {
+    socket.emit('heard');
+    }
     });
   });
 </script>
