@@ -18,6 +18,19 @@
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
   <!-- Chat script -->
   <script>
+  function stop() {
+    osc.disconnect();
+  }
+
+  function play(freq) {
+    osc = audioContext.createOscillator();
+    osc.frequency.value = freq; 
+    osc.type = "sine"
+    osc.connect(audioContext.destination);
+                    osc.start(0);
+                    setTimeout(stop(), 3000)
+  }
+
   $(function () {
     var socket = io();
     $('form').submit(function(){
@@ -28,7 +41,7 @@
     socket.on('chat message', function(msg, num){
       $('#messages').append($('<li>').text(msg));
       // Play audio of X frequency num for 3 seconds
-
+      play(num);
 
     // on HeardAudioTone
     if (0) {
