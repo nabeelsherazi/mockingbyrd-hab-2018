@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Symphony Chat</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="A community chat experience">
+    <meta name="author" content="Luke, Anil, Neil, Nabeel">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="/css/styles.css" rel="stylesheet" />
+	<script src="wad.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+
+  </head>
+  <!-- Chat script -->
+  <script>
+	  var listeningFrequency = 0;
+      frequencies = [300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800];
+
+
+  function stop() {
+    osc.disconnect();
+  }
+
+  function play(freq) {
+    osc = audioContext.createOscillator();
+    osc.frequency.value = freq;
+    osc.type = "sine";
+    osc.connect(audioContext.destination);
+    osc.start(0);
+    setTimeout(stop(), 3000);
+  }
+
+  $(function () {
+    var socket = io();
+    $('form').submit(function(){
+      socket.emit('chat message', $('#m').val());
+      console.log("I AM SENDING A MESSAGE!!!!!!!!!!!!")
+      $('#m').val('');
+      return false;
+    });
+    socket.on('chat message', function(msg, num){
+      $('#messages').append($('<li>').text(msg));
+      // Play audio of X frequency num for 3 seconds
+      play(frequencies[num]);
+    });
+
+	socket.on('currentFreq', function(num){
+      listeningFrequency = frequencies[num];
+	});
+  });
+
+
+
+  	//Listens to audio and measures pitch
+  	var voice = new Wad({source : 'mic' }); // At this point, your browser will ask for permission to access your microphone.
+  	var tuner = new Wad.Poly();
+  	tuner.add(voice);
+
+  	var heardArray = [0,0,0,0]
+
+  	voice.play(); // You must give your browser permission to access your microphone before calling play().
+
+  	tuner.updatePitch() // The tuner is now calculating the pitch and note name of its input 60 times per second. These values are stored in tuner.pitch and tuner.noteName.
+
+  	var logPitch = function(){
+  	    console.log(tuner.pitch, tuner.noteName)
+  	    requestAnimationFrame(logPitch)
+
+  		//adds current pitch to array
+  		heardArray.push(tuner.pitch)
+  		//removes first element
+  		heardArray.shift
+  		//calculates average
+
+  		var total = 0;
+  		for(var i = 0; i < heardArray.length; i++) {
+  		    total += heardArray[i];
+  		}
+  		var avg = total / heardArray.length;
+        };
+
+
+
+  	logPitch();
+
+
+
+
+
+    // on HeardAudioTone
+    if (listeningFrequency <= avg + 10 && listeningFrequency >= avg - 10) {
+    socket.emit('heard');
+    }
+</script>
+<!-- end chat script -->
+  <body>
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-left" href="#">
+              <img class="logo" alt="Brand" src="mockingbird.png">
+            </a>
+            <button type="button" class="btn btn-success navbar-right">Start Listening</button>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <ul id="messages"></ul>
+    </div>
+        <form action="">
+          <input id="m" autocomplete="off" /><button type="button" class="btn btn-success">Send</button>
+        </form>
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+  </body>
+</html>
