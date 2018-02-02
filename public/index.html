@@ -38,10 +38,17 @@
     setTimeout(stop(), 3000);
   }
 
-  $(function () {
+  $(function () { // Shorthand for $(document).ready(function() {
     var socket = io();
     $('form').submit(function(){
       socket.emit('chat message', $('#m').val());
+      $('#messages').append($('<li>').text($('#m').val()));
+      $('#m').val('');
+      return false;
+    });
+    $('#send').click(function(){
+      socket.emit('chat message', $('#m').val());
+      $('#messages').append($('<li>').text($('#m').val()));
       $('#m').val('');
       return false;
     });
@@ -113,7 +120,7 @@
         <ul id="messages"></ul>
     </div>
         <form action="">
-          <input id="m" autocomplete="off" /><button type="button" class="btn btn-success">Send</button>
+          <input id="m" autocomplete="off" /><button id="send" type="button" class="btn btn-success">Send</button>
         </form>
         <!-- Bootstrap core JavaScript
         ================================================== -->
