@@ -10,7 +10,7 @@ app.get('/', function(req, res) {
   res.sendFile(path.resolve(__dirname + '/index.html'));
 });
 
-app.use(express.static('/'));
+app.use(express.static(path.join(__dirname, "public")));
 
 var initialClients = io.sockets.clients();
 var activeClients = {};

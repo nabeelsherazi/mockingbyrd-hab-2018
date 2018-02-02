@@ -1,0 +1,25 @@
+{
+  "name": "mockingbyrd-hab-2018",
+  "version": "1.0.0",
+  "description": "a collaborative social artwork experience",
+  "main": "index.html",
+  "dependencies": {
+    "express": "^4.16.2",
+    "socket.io": "^2.0.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nabeelsherazi/mockingbyrd-hab-2018.git"
+  },
+  "author": "luke, neil, nabeel, anil",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nabeelsherazi/mockingbyrd-hab-2018/issues"
+  },
+  "homepage": "https://github.com/nabeelsherazi/mockingbyrd-hab-2018#readme"
+}
