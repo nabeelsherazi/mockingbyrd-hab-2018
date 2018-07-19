@@ -8,6 +8,7 @@ const port = 3000;
 
 app.get('/', function(req, res) {
   res.sendFile(path.resolve(__dirname + '/public/index.html'));
+  console.log("sent file at " + __dirname + '/public/index.html')
 });
 
 app.use(express.static(path.join(__dirname, "public")));
@@ -34,9 +35,14 @@ io.on('connection', function(socket) {
     console.log('message from user with id ' + socket.id + ' : ' + msg);
     selectedClient = randomClient(activeClients);
     while (selectedClient == socket.id) {
-      selectedClient = randomClient(activeClients); // Keep pulling random clients until the socket that sent the message is not the one to recieve.
+      if (Object.keys(activeClients).length == 1) { // Unless there's only one client
+        break
+      }
+      else {
+        selectedClient = randomClient(activeClients); // Keep pulling random clients until the socket that sent the message is not the one to recieve.
+      }
     }
-    console.log('selected client is ' + selectedClient);
+    console.log('selected random seed client is ' + selectedClient);
     activeClients[selectedClient] = true;
     socket.broadcast.to(selectedClient).emit('chat message', msg, 0);
     counter = 1;
@@ -54,9 +60,9 @@ io.on('connection', function(socket) {
 
 });
 
-var randomClient = function(obj) {
-  var keys = Object.keys(obj);
-  return keys[Math.floor(keys.length * Math.random())];
+var randomClient = function(clientListObject) {
+  var keys = Object.keys(clientListObject);
+  return keys[Math.floor(keys.length * Math.random() )];
 };
 
 var sendToAllRemainingClients = function() {
